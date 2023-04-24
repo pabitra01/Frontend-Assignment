@@ -1,13 +1,18 @@
 import React from "react";
 import Info from "../../common/Info";
+import { motion } from "framer-motion";
 
 const TypeInput = ({
   data,
   formik,
   style = " py-5 px-5 bg-[#881FFF08] border border-[#EFE0FF] ",
+  jsonKey,
 }: ITypeInputProps) => {
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
       className={`w-full flex justify-between items-center rounded-[7px] ${style} `}
     >
       <div className="body-1 flex items-center">
@@ -20,7 +25,16 @@ const TypeInput = ({
       <input
         name={data.jsonKey}
         type="text"
-        onChange={formik.handleChange}
+        onChange={
+          jsonKey
+            ? formik.handleChange(`${jsonKey}.${data.jsonKey}`)
+            : formik.handleChange
+        }
+        value={
+          jsonKey
+            ? formik.values[`${jsonKey}.${data.jsonKey}`]
+            : formik.values[`${jsonKey}`]
+        }
         required={data?.validate?.required}
         autoComplete="off"
         className="bg-[#881FFF1C] rounded-[7px] py-2 pl-5 w-[50%] body-2 focus:ring-0 outline-none placeholder-[#881FFF]"
@@ -28,7 +42,7 @@ const TypeInput = ({
           data.placeholder.length > 0 ? data.placeholder : "Type here"
         }
       />
-    </div>
+    </motion.div>
   );
 };
 type ITypeInputProps = {

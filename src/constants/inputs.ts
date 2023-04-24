@@ -4,4 +4,5 @@ export const INPUTS = {
   Radio: "Radio",
   Group: "Group",
   Switch: "Switch",
+  Ignore: "Ignore",
 };

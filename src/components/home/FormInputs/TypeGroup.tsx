@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import TypeSelect from "./TypeSelect";
 import TypeCheckbox from "./TypeCheckbox";
 import TypeInput from "./TypeInput";
@@ -22,17 +23,12 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
             data={inputData}
             formik={formik}
             jsonKey={data.jsonKey}
-            key={data.jsonKey}
+            style=" py-2"
           />
         );
       case INPUTS.Select:
         return (
-          <TypeSelect
-            data={inputData}
-            formik={formik}
-            jsonKey={data.jsonKey}
-            key={data.jsonKey}
-          />
+          <TypeSelect data={inputData} formik={formik} jsonKey={data.jsonKey} />
         );
       case INPUTS.Radio:
         return (
@@ -41,7 +37,6 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
             formik={formik}
             groupData={data}
             jsonKey={data.jsonKey}
-            key={data.jsonKey}
           />
         );
       case INPUTS.Switch:
@@ -50,7 +45,7 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
             formik={formik}
             data={inputData}
             jsonKey={`${data.jsonKey}.${inputData.jsonKey}`}
-            key={data.jsonKey}
+            key={data.label}
           />
         );
       default:
@@ -69,7 +64,12 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
     setIsShowOptional(isParentOptional);
   }, [isParentOptional]);
   return (
-    <div className="px-5 bg-[#881FFF08] border border-[#EFE0FF] rounded-[7px]">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="px-5 bg-[#881FFF08] border border-[#EFE0FF] rounded-[7px]"
+    >
       <div className="body-1 flex items-center py-3">
         <div className="body-1">{data.label}</div>
         {data?.validate?.required && <div className="text-red-500">*</div>}
@@ -79,7 +79,11 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
       </div>
       <hr />
       {sortedSubparameters.map((input: any) => {
-        return renderInputs(input);
+        return (
+          <React.Fragment key={input.label}>
+            {renderInputs(input)}
+          </React.Fragment>
+        );
       })}
       {requiredInputs.length < data.subParameters?.length && (
         <TypeCheckbox
@@ -87,7 +91,7 @@ const TypeGroup = ({ data, formik, isParentOptional }: ITypeGroupProps) => {
           handleChange={setIsShowOptional}
         />
       )}
-    </div>
+    </motion.div>
   );
 };
 type ITypeGroupProps = {

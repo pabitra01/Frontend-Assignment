@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import Info from "../../common/Info";
+import { motion } from "framer-motion";
 
 const TypeSelect = ({ data, formik, jsonKey, style }: ITypeSelectProps) => {
   useEffect(() => {
@@ -11,7 +12,11 @@ const TypeSelect = ({ data, formik, jsonKey, style }: ITypeSelectProps) => {
     }
   }, [data]);
   return (
-    <div
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      exit={{ opacity: 0 }}
       className={`w-full flex justify-between items-center rounded-[7px] py-2  ${style}`}
     >
       <div className="body-1 flex items-center">
@@ -48,7 +53,7 @@ const TypeSelect = ({ data, formik, jsonKey, style }: ITypeSelectProps) => {
           })}
         </select>
       </div>
-    </div>
+    </motion.div>
   );
 };
 type ITypeSelectProps = {
