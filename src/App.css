@@ -67,9 +67,12 @@
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.4);
-  transition: opacity 0.25s ease-in-out;
-  opacity: 1;
+  transition: all 0.25s ease-in-out;
+  opacity: 0;
   z-index: 1;
+}
+.ReactModal__Overlay--after-open{
+  opacity: 1;
 }
 .payload-modal{
   position: absolute;

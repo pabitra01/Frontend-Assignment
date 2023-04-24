@@ -20,7 +20,6 @@ const Modal = (props: IModalProps) => {
         >
           ✖️
         </div>
-        <hr />
         <div className="bg-[#881FFF1C] p-5 rounded-[7px]">
           <pre
             dangerouslySetInnerHTML={{

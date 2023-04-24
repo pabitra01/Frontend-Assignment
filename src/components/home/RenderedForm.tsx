@@ -47,7 +47,6 @@ const RenderedForm = ({ data }: IRenderedFormProps) => {
             key={inputData.jsonKey}
           />
         );
-
       default:
         break;
     }
@@ -63,7 +62,7 @@ const RenderedForm = ({ data }: IRenderedFormProps) => {
   return (
     <>
       {data ? (
-        <form onSubmit={formik.handleSubmit} className="h-full">
+        <form onSubmit={formik.handleSubmit} className="h-full" id="form">
           <div className="flex flex-col gap-2 h-[90%] overflow-auto">
             {data?.map((inputs: any) => {
               return renderInputs(inputs, formik);
@@ -74,7 +73,10 @@ const RenderedForm = ({ data }: IRenderedFormProps) => {
               isChecked={isShowOptional}
               handleChange={setIsShowOptional}
             />
-            <button className="bg-[#881FFF]  body-1 right-5 px-7 py-1 rounded-[7px] text-white float-right ">
+            <button
+              type="submit"
+              className="bg-[#881FFF]  body-1 right-5 px-7 py-1 rounded-[7px] text-white float-right "
+            >
               Submit
             </button>
           </div>

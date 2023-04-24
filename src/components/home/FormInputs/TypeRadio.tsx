@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import TypeSelect from "./TypeSelect";
 import TypeSwitch from "./TypeSwitch";
 import { IMap } from "../../../interface/type";
+import TypeInput from "./TypeInput";
+import { motion } from "framer-motion";
 
 const TypeRadio = ({ data, formik, groupData, jsonKey }: ITypeRadioProps) => {
   const [defaultTab, setDefaultTab] = useState(data.validate?.defaultValue);
@@ -19,7 +21,7 @@ const TypeRadio = ({ data, formik, groupData, jsonKey }: ITypeRadioProps) => {
           <TypeSelect
             data={tab}
             formik={formik}
-            key={tab.jsonKey}
+            key={tab.label}
             jsonKey={`${jsonKey}`}
           />
         );
@@ -29,6 +31,17 @@ const TypeRadio = ({ data, formik, groupData, jsonKey }: ITypeRadioProps) => {
             formik={formik}
             jsonKey={`${jsonKey}.${tab.jsonKey}`}
             data={tab}
+            key={tab.label}
+          />
+        );
+      case "Input":
+        return (
+          <TypeInput
+            data={tab}
+            formik={formik}
+            key={tab.label}
+            jsonKey={`${jsonKey}`}
+            style=" py-2"
           />
         );
       default:
@@ -39,14 +52,25 @@ const TypeRadio = ({ data, formik, groupData, jsonKey }: ITypeRadioProps) => {
     const tabType: IMap = {};
     const key: string = data.jsonKey;
     tabType[`${key}`] = defaultTab;
+    const tabObj: IMap = {};
+    tabData.subParameters.forEach((ele: any) => {
+      if (ele.validate.required && ele.jsonKey !== data.jsonKey) {
+        tabObj[`${ele.jsonKey}`] = ele.validate.defaultValue;
+      }
+    });
     if (jsonKey) {
-      formik.setFieldValue(`${jsonKey}`, { type: defaultTab });
+      formik.setFieldValue(`${jsonKey}`, { ...tabObj, ...tabType });
     }
-  }, [defaultTab]);
+  }, [defaultTab, data]);
 
   return (
     <>
-      <div className="w-full grid grid-cols-2  py-5 gap-5">
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 1 }}
+        className="w-full grid grid-cols-2  py-5 gap-5"
+      >
         {data.validate?.options.map((option: any) => {
           return (
             <div
@@ -60,9 +84,15 @@ const TypeRadio = ({ data, formik, groupData, jsonKey }: ITypeRadioProps) => {
             </div>
           );
         })}
-      </div>
+      </motion.div>
       {tabData.subParameters.map((ele: any) => {
-        return renderTabData(ele);
+        if (ele.jsonKey !== data.jsonKey) {
+          return (
+            <React.Fragment key={ele.label}>
+              {renderTabData(ele)}
+            </React.Fragment>
+          );
+        }
       })}
     </>
   );

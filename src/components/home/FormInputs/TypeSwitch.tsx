@@ -1,12 +1,20 @@
 import React, { useEffect } from "react";
 import Info from "../../common/Info";
+import { motion } from "framer-motion";
 
 const TypeSwitch = ({ formik, jsonKey, data }: ITypeSwitchProps) => {
   useEffect(() => {
-    formik.setFieldValue(`${jsonKey}`, false);
-  }, []);
+    if (data.validate.required) {
+      formik.setFieldValue(`${jsonKey}`, false);
+    }
+  }, [data]);
   return (
-    <div className="flex items-center ">
+    <motion.div
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+      className="flex items-center "
+    >
       <input
         name={data.jsonKey}
         checked={formik.values[`${jsonKey}`]}
@@ -28,7 +36,7 @@ const TypeSwitch = ({ formik, jsonKey, data }: ITypeSwitchProps) => {
           )}
         </div>
       </label>
-    </div>
+    </motion.div>
   );
 };
 type ITypeSwitchProps = {
